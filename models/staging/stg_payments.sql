@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 WITH raw_payments AS (
     SELECT * FROM {{ source('olist_raw', 'olist_order_payments_dataset') }}
 )
