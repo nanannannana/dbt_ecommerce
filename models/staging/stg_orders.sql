@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 WITH raw_orders AS (
     SELECT * FROM {{ source('olist_raw', 'olist_orders_dataset') }}
 )
@@ -12,5 +10,9 @@ SELECT
     order_approved_at AS approved_at,
     order_delivered_carrier_date AS shipped_at,
     order_delivered_customer_date AS delivered_at,
-    order_estimated_delivery_date AS estimated_delivery_at
+    order_estimated_delivery_date AS estimated_delivery_at,
+    CASE
+        WHEN order_status = 'delivered' THEN TRUE
+        ELSE FALSE
+    END AS is_completed
 FROM raw_orders

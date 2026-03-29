@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 WITH raw_order_items AS (
     SELECT * FROM {{ source('olist_raw', 'olist_order_items_dataset') }}
 )
