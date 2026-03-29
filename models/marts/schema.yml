@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "주문별 매출 및 배송 지표 관련 테이블"
+    columns:
+      - name: order_id
+        description: "주문 ID"
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: total_order_item_amount
+        description: "상품가 + 배송비"
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+  
+  - name: dim_customers
+    description: "고객별 LTV 및 지역 정보 관련 테이블"
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
